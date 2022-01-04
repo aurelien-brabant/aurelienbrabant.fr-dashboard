@@ -11,7 +11,8 @@ import {
   VStack,
   Textarea,
   Text,
-  AspectRatio
+  AspectRatio,
+  FormHelperText
 } from "@chakra-ui/react";
 import Image from 'next/image';
 import { useEffect, useState, useContext } from "react";
@@ -26,6 +27,7 @@ type FormData = {
   description: string;
   privacy: string;
   coverImagePath: string;
+  content: string;
 };
 
 const BlogpostMeta: React.FC<{}> = ({}) => {
@@ -40,7 +42,9 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
     description: "",
     privacy: "",
     coverImagePath: "",
+    content: ""
   });
+  const [ editContentMode, setEditContentMode ] = useState(false);
   const [availableTags, setAvailableTags] = useState<string[]>([]);
   const [ tags, setTags ] = useState<string[]>([]);
   const [ error, setError ] = useState<null | string>(null);
@@ -67,7 +71,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
     //setIsLoading(true);
     setIsWaitingForResponse(true);
-    const res = await fetchAs(`/blogposts/${id}`, {
+    const res = await fetchAs(`/admin/blogposts/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +92,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
   };
 
   const fetchPost = async (postId: string): Promise<void> => {
-    const res = await fetchAs(`/blogposts/${postId}`);
+    const res = await fetchAs(`/admin/blogposts/${postId}`);
 
     if (res.status === 200) {
       const json: BrabantApi.BlogpostData = await res.json();
@@ -97,8 +101,9 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
       setFormData({
         title: json.title,
         description: json.description,
-        privacy: "PRIVATE",
+        privacy: json.privacy,
         coverImagePath: json.coverImagePath,
+        content: json.content
       });
     }
   };
@@ -128,9 +133,24 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
     return <Heading>Louding...</Heading>;
   }
 
+  if (editContentMode) {
+    return (
+      <VStack>
+      <Heading>Edit content of '{post?.title}'</Heading>
+      <Button bgColor="blue.300" onClick={() => { setEditContentMode(false); }}>Back</Button>
+      <FormControl>
+          <Textarea name="content" minHeight="80vh" onChange={handleFormChange}>
+            {formData.content}
+          </Textarea>
+      </FormControl>
+      </VStack>
+    )
+  }
+
   return (
-    <React.Fragment>
+    <VStack>
       <Heading textAlign="center">Edit post metadata</Heading>
+      <Button bgColor="blue.300" onClick={() => { setEditContentMode(true) }}>Edit content</Button>
       <form onSubmit={handleFormSubmit} method="PATCH">
         <VStack w="100%" spacing={3}>
           <SimpleGrid columns={4} spacing={3} w="100%" py={6}>
@@ -175,6 +195,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
                   <option value="PRIVATE">private</option>
                   <option value="PUBLIC">public</option>
                 </Select>
+                <FormHelperText>PRIVATE-PREV makes the blogpost private but allows previewing it using a special link</FormHelperText>
               </FormControl>
             </GridItem>
 
@@ -191,7 +212,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
               </FormControl>
 
                 <AspectRatio ratio={1} width={100}>
-                <img src={formData.coverImagePath ? formData.coverImagePath : "https://www.tg-geislingen.de/wp-content/uploads/2017/06/no-picture-300x300.png"} />
+                <img alt="preview image" src={formData.coverImagePath ? formData.coverImagePath : "https://www.tg-geislingen.de/wp-content/uploads/2017/06/no-picture-300x300.png"} />
                 </AspectRatio>
               </VStack>
             </GridItem>
@@ -225,7 +246,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 }
         </VStack>
       </form>
-    </React.Fragment>
+    </VStack>
   );
 };
 

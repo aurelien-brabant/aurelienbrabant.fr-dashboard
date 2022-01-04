@@ -68,7 +68,7 @@ const Blogposts = () => {
     const [ posts, setPosts ] = useState<BrabantApi.BlogpostPreview[]>([]);
 
     useEffect(() => {
-        fetchAs('/blogposts').then(res => { res.json().then(json => {
+        fetchAs('/admin/blogposts').then(res => { res.json().then(json => {
             console.log(json);
             setPosts(json.posts);
             setLoading(false);
