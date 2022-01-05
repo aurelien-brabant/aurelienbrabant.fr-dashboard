@@ -121,11 +121,13 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
     const id = window.location.pathname.substr(
       window.location.pathname.lastIndexOf("/") + 1
     );
-
-    fetchPost(id);
-    fetchTags().then(() => {
+    
+    (async () => {
+      await fetchPost(id);
+      await fetchTags();
       setIsLoading(false);
-    });
+    })();
+
   }, []);
 
   if (isLoading) {
