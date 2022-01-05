@@ -86,18 +86,19 @@ declare namespace BrabantApi {
 		logoURI: string;
 	}
 
-	export type ProjectPreview = {
+	export interface ProjectPreview {
+		projectId: string;
 		name: string;
 		description: string;
 		coverURI: string;
 		technologies: Technology[];
+		startTs: string,
+		endTs?: string,
+		stringId: string;
 	}
 
-	export type Project = {
-		name: string;
-		description: string;
-		coverURI: string;
+	export interface Project extends ProjectPreview {
 		content: string;
-		technologies: Technology[];
-	};
+		privacy: 'PRIVATE' | 'PRIVATE-PREV' | 'PUBLIC';
+	}
 }
