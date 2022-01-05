@@ -20,6 +20,7 @@ declare namespace BrabantApi {
 		estimatedReadingTime: number;
 		stringId: string;
 		tags: string[];
+		coverImagePath: string;
 	};
 
 	/**
@@ -80,6 +81,7 @@ declare namespace BrabantApi {
 	}
 
 	export type Technology = {
+		technologyId: string;
 		name: string;
 		logoURI: string;
 	}
