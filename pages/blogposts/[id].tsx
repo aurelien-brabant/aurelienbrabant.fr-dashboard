@@ -14,9 +14,8 @@ import {
   AspectRatio,
   FormHelperText
 } from "@chakra-ui/react";
-import Image from 'next/image';
 import { useEffect, useState, useContext } from "react";
-import Authenticator from "../../src/Authenticator";
+import authenticatedRoute from "../../src/AuthenticatedRoute";
 import Layout from "../../src/Layout";
 import authenticatorContext from "../../context/authenticator/authenticatorContext";
 import { useRouter } from "next/router";
@@ -252,12 +251,10 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
 const BlogpostPage = () => {
   return (
-    <Authenticator>
       <Layout>
         <BlogpostMeta />
       </Layout>
-    </Authenticator>
   );
 };
 
-export default BlogpostPage;
+export default authenticatedRoute(BlogpostPage, { min: 10, max: 100, fallbackRoute: '/' });

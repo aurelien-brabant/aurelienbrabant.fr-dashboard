@@ -11,9 +11,10 @@ const AuthenticatorProvider: React.FC<{}> = ({ children }) => {
 		const localToken = window.localStorage.getItem("jwt_token");
 
 		if (localToken) {
+			console.log('Got localtoken');
 			setToken(localToken);
+			setIsLoading(false);
 		}
-		setIsLoading(false);
 	}, []);
 
 	const setTokenWrapper = (newToken: string) => {
@@ -29,14 +30,12 @@ const AuthenticatorProvider: React.FC<{}> = ({ children }) => {
 				'Authorization': `Bearer ${token}`
 			};
 
-		console.log(reqinit);
-
 		return fetch(`${process.env.NEXT_PUBLIC_API_URI}${info}`, reqinit);
 	}
 
-	const fetchUser = async (): Promise<boolean> => {
+	const fetchUser = async (): Promise<BrabantApi.UserData | null> => {
 		if (!token) {
-			return false;
+			return null;
 		}
 
 		const res = await fetchAs('/auth/login');
@@ -44,7 +43,7 @@ const AuthenticatorProvider: React.FC<{}> = ({ children }) => {
 		if (res.status === 200) {
 			const json =  await res.json();
 			setUser(json);
-			return true;
+			return json as BrabantApi.UserData;
 		}
 
 		// token is invalid
@@ -53,7 +52,7 @@ const AuthenticatorProvider: React.FC<{}> = ({ children }) => {
 		}
 
 
-		return false;
+		return null;
 	};
 
 	return (

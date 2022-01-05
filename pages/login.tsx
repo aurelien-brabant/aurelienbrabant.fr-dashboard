@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import { FormEvent, useState, useContext, useEffect } from "react";
 import authenticatorContext from "../context/authenticator/authenticatorContext";
+
 import {
   Heading,
   Text,
@@ -20,16 +21,16 @@ const Login: NextPage = () => {
   const [error, setError] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { token, setToken } = useContext(authenticatorContext);
+  const { user, setToken } = useContext(authenticatorContext);
 
   const router = useRouter();
 
   useEffect(() => {
-    if (token) {
+    if (user) {
       // user is already logged in
       router.back();
     }
-  }, []);
+  }, [user]);
 
   const attemptLogin = async (e: FormEvent) => {
     setIsLoading(true);
@@ -50,9 +51,9 @@ const Login: NextPage = () => {
       
       const json = await res.json();
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         setToken(json.accessToken);
-        router.push('/myaccount');
+        router.push('/');
       } else {
         setError(json.msg);
       }

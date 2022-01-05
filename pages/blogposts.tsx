@@ -2,6 +2,7 @@ import { FormEventHandler, useContext, useEffect, useState } from "react";
 import authenticatorContext from "../context/authenticator/authenticatorContext";
 import Authenticator from "../src/Authenticator";
 import Layout from "../src/Layout";
+import authenticatedRoute from "../src/AuthenticatedRoute";
 
 import {
   Center,
@@ -120,6 +121,7 @@ const Blogposts = () => {
   };
 
   useEffect(() => {
+    console.log('vroomm');
     fetchAs("/admin/blogposts").then((res) => {
       res.json().then((json) => {
         setPosts(json.posts);
@@ -129,7 +131,6 @@ const Blogposts = () => {
   }, []);
 
   return (
-    <Authenticator>
       <Layout>
         <VStack w="full" spacing={5}>
           {/* add new post form */}
@@ -167,8 +168,7 @@ const Blogposts = () => {
           </VStack>
         </VStack>
       </Layout>
-    </Authenticator>
   );
 };
 
-export default Blogposts;
+export default authenticatedRoute(Blogposts, { min: 10, max: 100, fallbackRoute: '/' });
