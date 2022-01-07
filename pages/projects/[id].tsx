@@ -15,13 +15,14 @@ import {
   AspectRatio,
   HStack,
   FormHelperText,
+  InputLeftAddon,
+  InputGroup,
   Image as ChakraImage,
 } from "@chakra-ui/react";
 import { useEffect, useState, useContext } from "react";
 import authenticatedRoute from "../../src/AuthenticatedRoute";
 import Layout from "../../src/Layout";
 import authenticatorContext from "../../context/authenticator/authenticatorContext";
-import { useRouter } from "next/router";
 
 type FormData = {
   name: string;
@@ -31,11 +32,12 @@ type FormData = {
   startTs: string;
   endTs: string;
   privacy: 'PRIVATE' | 'PRIVATE-PREV' | 'PUBLIC';
+  githubLink: string;
+  gitlabLink: string;
 };
 
 const BlogpostMeta: React.FC<{}> = ({}) => {
   const { fetchAs } = useContext(authenticatorContext);
-  const router = useRouter();
 
   const [project, setProject] = useState<BrabantApi.Project>();
   const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +49,9 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
     content: "",
     startTs: new Date(Date.now()).toISOString(),
     endTs: new Date(Date.now()).toISOString(),
-    privacy: 'PRIVATE'
+    privacy: 'PRIVATE',
+    gitlabLink: '',
+    githubLink: ''
   });
   const [technologies, setTechnologies] = useState<BrabantApi.Technology[]>([]);
   const [technologiesIds, setTechnologiesIds] = useState<string[]>([]);
@@ -75,12 +79,15 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
     );
 
     setIsWaitingForResponse(true);
+
+    const requestBody: any = { ...formData, technologiesIds } 
+
     const res = await fetchAs(`/admin/projects/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...formData, technologiesIds }),
+      body: JSON.stringify(requestBody)
     });
     setIsWaitingForResponse(false);
 
@@ -105,7 +112,9 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
         content: json.content,
         startTs: json.startTs,
         endTs: json.endTs ? json.endTs : new Date(Date.now()).toISOString(),
-        privacy: json.privacy
+        privacy: json.privacy,
+        githubLink: json.githubLink,
+        gitlabLink: json.gitlabLink
       });
       setTechnologiesIds(json.technologies.map(techno => techno.technologyId));
     }
@@ -268,14 +277,44 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
                 </AspectRatio>
               </VStack>
             </GridItem>
+
+            <GridItem colSpan={2}>
+              <FormControl>
+                <FormLabel textTransform="uppercase">Gitlab Link</FormLabel>
+              <InputGroup size='sm'>
+                <InputLeftAddon children='https://gitlab.com/' />
+                <Input
+                  value={formData.gitlabLink}
+                  name="gitlabLink"
+                  bg="gray.50"
+                  onChange={handleFormChange}
+                />
+              </InputGroup>
+              </FormControl>
+            </GridItem>
+
+            <GridItem colSpan={2}>
+              <FormControl>
+                <FormLabel textTransform="uppercase">Github Link</FormLabel>
+                <InputGroup size='sm'>
+                <InputLeftAddon children='https://github.com/' />
+                <Input
+                  value={formData.githubLink}
+                  name="githubLink"
+                  bg="gray.50"
+                  onChange={handleFormChange}
+                />
+                </InputGroup>
+              </FormControl>
+            </GridItem>
+
           </SimpleGrid>
 
           <VStack w="100%" alignItems="start" spacing={3}>
             <Heading fontSize={22}>Select technologies</Heading>
             <Text>
               {" "}
-              Click to add or remove from the list, type in the input and press
-              enter to add a new tag{" "}
+              Click to add or remove from the list
             </Text>
 
             <HStack spacing={6}>
