@@ -87,7 +87,8 @@ const ProjectsPage: NextPage = () => {
         "https://images.unsplash.com/photo-1499380848949-2960e980ed02?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
       content: "There is where your writing begins",
       startTs: new Date(Date.now()),
-      technologiesIds: []
+      technologiesIds: [],
+      role: "Developer"
     };
 
     let res = await fetchAs("/admin/projects", {

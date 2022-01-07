@@ -23,15 +23,18 @@ import { useEffect, useState, useContext } from "react";
 import authenticatedRoute from "../../src/AuthenticatedRoute";
 import Layout from "../../src/Layout";
 import authenticatorContext from "../../context/authenticator/authenticatorContext";
+import nullify from "../../lib/nullify";
 
 type FormData = {
   name: string;
   description: string;
+  role: string;
   coverURI: string;
   content: string;
   startTs: string;
   endTs: string;
-  privacy: 'PRIVATE' | 'PRIVATE-PREV' | 'PUBLIC';
+  privacy: "PRIVATE" | "PRIVATE-PREV" | "PUBLIC";
+  companyName: string;
   githubLink: string;
   gitlabLink: string;
 };
@@ -45,13 +48,15 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
+    role: "",
+    companyName: "",
     coverURI: "",
     content: "",
     startTs: new Date(Date.now()).toISOString(),
     endTs: new Date(Date.now()).toISOString(),
-    privacy: 'PRIVATE',
-    gitlabLink: '',
-    githubLink: ''
+    privacy: "PRIVATE",
+    gitlabLink: "",
+    githubLink: "",
   });
   const [technologies, setTechnologies] = useState<BrabantApi.Technology[]>([]);
   const [technologiesIds, setTechnologiesIds] = useState<string[]>([]);
@@ -80,14 +85,21 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
     setIsWaitingForResponse(true);
 
-    const requestBody: any = { ...formData, technologiesIds } 
+    // nullify fields that are optional
+    const requestBody: any = nullify<string>(
+      { ...formData, technologiesIds },
+      ["githubLink", "gitlabLink", "companyName"],
+      (v) => v.length === 0
+    );
+
+    console.log(requestBody);
 
     const res = await fetchAs(`/admin/projects/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
     });
     setIsWaitingForResponse(false);
 
@@ -108,15 +120,19 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
       setFormData({
         name: json.name,
         description: json.description,
+        role: json.role,
+        companyName: json.companyName ? json.companyName : "",
         coverURI: json.coverURI,
         content: json.content,
         startTs: json.startTs,
         endTs: json.endTs ? json.endTs : new Date(Date.now()).toISOString(),
         privacy: json.privacy,
-        githubLink: json.githubLink,
-        gitlabLink: json.gitlabLink
+        githubLink: json.githubLink ? json.githubLink : "",
+        gitlabLink: json.gitlabLink ? json.gitlabLink : "",
       });
-      setTechnologiesIds(json.technologies.map(techno => techno.technologyId));
+      setTechnologiesIds(
+        json.technologies.map((techno) => techno.technologyId)
+      );
     }
   };
 
@@ -169,7 +185,9 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
   return (
     <VStack>
-      <Heading textAlign="center">Edit project metadata (#{project?.projectId})</Heading>
+      <Heading textAlign="center">
+        Edit project metadata (#{project?.projectId})
+      </Heading>
       <Button
         bgColor="blue.300"
         onClick={() => {
@@ -182,8 +200,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
         <VStack w="100%" spacing={3}>
           <SimpleGrid columns={4} spacing={3} w="100%" py={6}>
             <GridItem colSpan={2}>
-              <FormControl>
-                <FormLabel textTransform="uppercase">Title</FormLabel>
+              <FormControl isRequired>
+                <FormLabel textTransform="uppercase" htmlFor="name">Name</FormLabel>
                 <Input
                   name="name"
                   value={formData.name}
@@ -194,8 +212,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
             </GridItem>
 
             <GridItem colSpan={2}>
-              <FormControl>
-                <FormLabel textTransform="uppercase">Description</FormLabel>
+              <FormControl isRequired>
+                <FormLabel htmlFor="description" textTransform="uppercase">Description</FormLabel>
                 <Textarea
                   name="description"
                   bg="gray.50"
@@ -206,8 +224,32 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
             </GridItem>
 
             <GridItem colSpan={2}>
+              <FormControl isRequired>
+                <FormLabel htmlFor="role" textTransform="uppercase">Role</FormLabel>
+                <Input
+                  name="role"
+                  value={formData.role}
+                  bg="gray.50"
+                  onChange={handleFormChange}
+                />
+              </FormControl>
+            </GridItem>
+
+            <GridItem colSpan={2}>
               <FormControl>
-                <FormLabel textTransform="uppercase">Beginning date</FormLabel>
+                <FormLabel htmlFor="companyName" textTransform="uppercase">Company</FormLabel>
+                <Input
+                  name="companyName"
+                  value={formData.companyName}
+                  bg="gray.50"
+                  onChange={handleFormChange}
+                />
+              </FormControl>
+            </GridItem>
+
+            <GridItem colSpan={2}>
+              <FormControl isRequired>
+                <FormLabel htmlFor="startTs" textTransform="uppercase">Beginning date</FormLabel>
                 <Input
                   type="date"
                   value={formData.startTs.split("T")[0]}
@@ -220,7 +262,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
             <GridItem colSpan={2}>
               <FormControl>
-                <FormLabel textTransform="uppercase">Ending date</FormLabel>
+                <FormLabel htmlFor="endTs" textTransform="uppercase">Ending date</FormLabel>
                 <Input
                   type="date"
                   value={formData.endTs.split("T")[0]}
@@ -232,8 +274,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
             </GridItem>
 
             <GridItem colSpan={2}>
-              <FormControl>
-                <FormLabel textTransform="uppercase">
+              <FormControl isRequired>
+                <FormLabel htmlFor="privacy" textTransform="uppercase">
                   Select visibility
                 </FormLabel>
                 <Select
@@ -255,8 +297,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
             <GridItem colSpan={2}>
               <VStack>
-                <FormControl>
-                  <FormLabel textTransform="uppercase">cover URI</FormLabel>
+                <FormControl isRequired>
+                  <FormLabel htmlFor="coverURI" textTransform="uppercase">cover URI</FormLabel>
                   <Input
                     name="coverURI"
                     value={formData.coverURI}
@@ -281,59 +323,59 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
             <GridItem colSpan={2}>
               <FormControl>
                 <FormLabel textTransform="uppercase">Gitlab Link</FormLabel>
-              <InputGroup size='sm'>
-                <InputLeftAddon children='https://gitlab.com/' />
-                <Input
-                  value={formData.gitlabLink}
-                  name="gitlabLink"
-                  bg="gray.50"
-                  onChange={handleFormChange}
-                />
-              </InputGroup>
+                <InputGroup size="sm">
+                  <InputLeftAddon children="https://gitlab.com/" />
+                  <Input
+                    value={formData.gitlabLink}
+                    name="gitlabLink"
+                    bg="gray.50"
+                    onChange={handleFormChange}
+                  />
+                </InputGroup>
               </FormControl>
             </GridItem>
 
             <GridItem colSpan={2}>
               <FormControl>
                 <FormLabel textTransform="uppercase">Github Link</FormLabel>
-                <InputGroup size='sm'>
-                <InputLeftAddon children='https://github.com/' />
-                <Input
-                  value={formData.githubLink}
-                  name="githubLink"
-                  bg="gray.50"
-                  onChange={handleFormChange}
-                />
+                <InputGroup size="sm">
+                  <InputLeftAddon children="https://github.com/" />
+                  <Input
+                    value={formData.githubLink}
+                    name="githubLink"
+                    bg="gray.50"
+                    onChange={handleFormChange}
+                  />
                 </InputGroup>
               </FormControl>
             </GridItem>
-
           </SimpleGrid>
 
           <VStack w="100%" alignItems="start" spacing={3}>
             <Heading fontSize={22}>Select technologies</Heading>
-            <Text>
-              {" "}
-              Click to add or remove from the list
-            </Text>
+            <Text> Click to add or remove from the list</Text>
 
             <HStack spacing={6}>
               {technologies.map((techno) => {
-                const isSelected = technologiesIds.includes(techno.technologyId);
-                
+                const isSelected = technologiesIds.includes(
+                  techno.technologyId
+                );
+
                 return (
                   <Box
-                    opacity={
-                      isSelected ? 1 : 0.4
-                    }
+                    opacity={isSelected ? 1 : 0.4}
                     onClick={() => {
                       if (!isSelected) {
-                      setTechnologiesIds([
-                        ...technologiesIds,
-                        techno.technologyId,
-                      ]);
+                        setTechnologiesIds([
+                          ...technologiesIds,
+                          techno.technologyId,
+                        ]);
                       } else {
-                        setTechnologiesIds(technologiesIds.filter(id => techno.technologyId !== id));
+                        setTechnologiesIds(
+                          technologiesIds.filter(
+                            (id) => techno.technologyId !== id
+                          )
+                        );
                       }
                     }}
                   >
