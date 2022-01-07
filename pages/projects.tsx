@@ -33,8 +33,13 @@ const ProjectCard: React.FC<{ project: BrabantApi.ProjectPreview }> = ({
       >
         <VStack
           alignItems="start"
+          color="#fff"
+          bgPosition="center"
+          bgSize="cover"
+          border="5px #fff solid"
+          minH="150px"
           w="full"
-          bg={useColorModeValue("white", "gray.900")}
+          bgImage={`linear-gradient(rgba(0, 0, 0, .9),rgba(0, 0, 0, 0.85)) , url('${project.coverURI}')`}
           rounded={"md"}
           boxShadow="md"
           p={6}
@@ -46,20 +51,18 @@ const ProjectCard: React.FC<{ project: BrabantApi.ProjectPreview }> = ({
         >
           <Stack>
             <Text
-              color={"green.500"}
               textTransform={"uppercase"}
               fontWeight={800}
               fontSize={"sm"}
               letterSpacing={1.1}
             ></Text>
             <Heading
-              color={useColorModeValue("gray.700", "white")}
               fontSize={"2xl"}
               fontFamily={"body"}
             >
-              {project.name}
+              {project.name} - {project.role}
             </Heading>
-            <Text color={"gray.500"}>{project.description}</Text>
+            <Text color={"gray.200"}>{project.description}</Text>
           </Stack>
         </VStack>
       </Link>
@@ -68,7 +71,7 @@ const ProjectCard: React.FC<{ project: BrabantApi.ProjectPreview }> = ({
 };
 
 const ProjectsPage: NextPage = () => {
-  const { fetchAs, user } = useContext(authenticatorContext);
+  const { fetchAs } = useContext(authenticatorContext);
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState<BrabantApi.ProjectPreview[]>([]);
   const [projectTitle, setProjectTitle] = useState("");
