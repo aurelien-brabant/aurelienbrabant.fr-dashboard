@@ -324,7 +324,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
               <FormControl>
                 <FormLabel textTransform="uppercase">Gitlab Link</FormLabel>
                 <InputGroup size="sm">
-                  <InputLeftAddon children="https://gitlab.com/" />
+                  <InputLeftAddon>https://gitlab.com</InputLeftAddon>
                   <Input
                     value={formData.gitlabLink}
                     name="gitlabLink"
@@ -339,7 +339,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
               <FormControl>
                 <FormLabel textTransform="uppercase">Github Link</FormLabel>
                 <InputGroup size="sm">
-                  <InputLeftAddon children="https://github.com/" />
+                  <InputLeftAddon>https://github.com/</InputLeftAddon>
                   <Input
                     value={formData.githubLink}
                     name="githubLink"
@@ -363,6 +363,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
                 return (
                   <Box
+                    key={techno.name}
                     opacity={isSelected ? 1 : 0.4}
                     onClick={() => {
                       if (!isSelected) {

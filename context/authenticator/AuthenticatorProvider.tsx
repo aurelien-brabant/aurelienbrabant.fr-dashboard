@@ -13,8 +13,8 @@ const AuthenticatorProvider: React.FC<{}> = ({ children }) => {
 		if (localToken) {
 			console.log('Got localtoken');
 			setToken(localToken);
-			setIsLoading(false);
 		}
+		setIsLoading(false);
 	}, []);
 
 	const setTokenWrapper = (newToken: string) => {

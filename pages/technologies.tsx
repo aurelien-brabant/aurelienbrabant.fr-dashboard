@@ -17,6 +17,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  GridItem,
+  SimpleGrid,
   Link as ChakraLink
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon, AddIcon } from "@chakra-ui/icons";
@@ -149,8 +151,9 @@ const TechnologiesPage: NextPage = () => {
           onClick={() => { setSelectedTechno(null) }}
         />
         </HStack>
-        <HStack w="full" py={10}>
+        <SimpleGrid columns={5} w="full" py={10} spacing={5}>
           {technologies.map((tech) => (
+            <GridItem colspan={1}>
             <VStack
               key={tech.technologyId}
               border="1px rgba(0, 0, 0, .1) solid"
@@ -187,8 +190,9 @@ const TechnologiesPage: NextPage = () => {
                 />
               </HStack>
             </VStack>
+            </GridItem>
           ))}
-        </HStack>
+        </SimpleGrid>
       </VStack>
     </Layout>
   );
