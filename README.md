@@ -1,34 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is the dashboard that I use to interact with the API that makes my personal website run.
 
-## Getting Started
+Using this dashboard, I'm able to login, add and edit blog posts, projects, and more (see screenshots below).
 
-First, run the development server:
+I decided to use React and Next for ease of use and speed, as well as ChakraUI for the styling part (which I didn't really push since this dashboard is only used by me).
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+# Screenshots
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![loading page](https://i.imgur.com/IXDU5gm.png)
+![projects page](https://i.imgur.com/8J71DUt.png)
+![technologies page](https://i.imgur.com/JU3Al2a.png)
+![edit project page](https://i.imgur.com/hl7jk6W.png)
+![edit project content](https://i.imgur.com/nJfrPco.png)
+![edit blogpost](https://i.imgur.com/ySPgoHC.png)
