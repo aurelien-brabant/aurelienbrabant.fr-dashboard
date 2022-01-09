@@ -30,7 +30,7 @@ const AuthenticatorProvider: React.FC<{}> = ({ children }) => {
 				'Authorization': `Bearer ${token}`
 			};
 
-		return fetch(`${process.env.NEXT_PUBLIC_API_URI}${info}`, reqinit);
+		return fetch(`/api/${info}`, reqinit);
 	}
 
 	const fetchUser = async (): Promise<BrabantApi.UserData | null> => {

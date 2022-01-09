@@ -1,6 +1,7 @@
 FROM		alpine:3.13.4
 
-ENV			NEXT_PUBLIC_API_URI=http://localhost:5000
+ENV			NEXT_PUBLIC_API_URI=http://localhost:5000	\
+			NEXT_PUBLIC_HOST_PORT=localhost:3000
 
 # Install required packages. The yarn package should install
 # NodeJS and all the required deps.

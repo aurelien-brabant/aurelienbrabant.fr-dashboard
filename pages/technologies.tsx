@@ -153,7 +153,7 @@ const TechnologiesPage: NextPage = () => {
         </HStack>
         <SimpleGrid columns={5} w="full" py={10} spacing={5}>
           {technologies.map((tech) => (
-            <GridItem colspan={1}>
+            <GridItem colspan={1} key={tech.name}>
             <VStack
               key={tech.technologyId}
               border="1px rgba(0, 0, 0, .1) solid"

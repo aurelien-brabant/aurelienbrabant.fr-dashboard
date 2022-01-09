@@ -37,7 +37,7 @@ const Login: NextPage = () => {
     e.preventDefault();
 
     if (process.env.NEXT_PUBLIC_API_URI) {
-      const res = await fetch(process.env.NEXT_PUBLIC_API_URI + '/auth/login', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
