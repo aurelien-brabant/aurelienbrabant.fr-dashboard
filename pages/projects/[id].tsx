@@ -311,9 +311,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
                   <img
                     alt="preview image"
                     src={
-                      formData.coverURI
-                        ? formData.coverURI
-                        : "https://www.tg-geislingen.de/wp-content/uploads/2017/06/no-picture-300x300.png"
+                      formData.coverURI.startsWith('http') ? formData.coverURI : `${location.protocol}//${process.env.NEXT_PUBLIC_HOST_PORT}/${formData.coverURI}`
                     }
                   />
                 </AspectRatio>

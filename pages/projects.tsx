@@ -18,7 +18,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import {NextPage} from "next";
+import { NextPage } from "next";
 
 const ProjectCard: React.FC<{ project: BrabantApi.ProjectPreview }> = ({
   project,
@@ -39,7 +39,11 @@ const ProjectCard: React.FC<{ project: BrabantApi.ProjectPreview }> = ({
           border="5px #fff solid"
           minH="150px"
           w="full"
-          bgImage={`linear-gradient(rgba(0, 0, 0, .9),rgba(0, 0, 0, 0.85)) , url('${project.coverURI}')`}
+          bgImage={`linear-gradient(rgba(0, 0, 0, .9),rgba(0, 0, 0, 0.85)) , url('${
+            project.coverURI.startsWith('http')
+              ? project.coverURI
+              : `${location.protocol}//${process.env.NEXT_PUBLIC_HOST_PORT}${project.coverURI}`
+          }')`}
           rounded={"md"}
           boxShadow="md"
           p={6}
@@ -56,10 +60,7 @@ const ProjectCard: React.FC<{ project: BrabantApi.ProjectPreview }> = ({
               fontSize={"sm"}
               letterSpacing={1.1}
             ></Text>
-            <Heading
-              fontSize={"2xl"}
-              fontFamily={"body"}
-            >
+            <Heading fontSize={"2xl"} fontFamily={"body"}>
               {project.name} - {project.role}
             </Heading>
             <Text color={"gray.200"}>{project.description}</Text>
@@ -91,7 +92,7 @@ const ProjectsPage: NextPage = () => {
       content: "There is where your writing begins",
       startTs: new Date(Date.now()),
       technologiesIds: [],
-      role: "Developer"
+      role: "Developer",
     };
 
     let res = await fetchAs("/admin/projects", {
@@ -108,8 +109,8 @@ const ProjectsPage: NextPage = () => {
       setError(errorMsg);
     }
 
-    res = await fetchAs('/admin/projects');
-    setProjects((await res.json()));
+    res = await fetchAs("/admin/projects");
+    setProjects(await res.json());
 
     setLoading(false);
   };
@@ -124,44 +125,53 @@ const ProjectsPage: NextPage = () => {
   }, []);
 
   return (
-      <Layout>
-        <VStack w="full" spacing={5}>
-          {/* add new post form */}
-          <form
-            method="POST"
-            style={{ width: "100%" }}
-            onSubmit={handleProjectCreation}
-          >
-            <Center>
-              <HStack alignItems="center" w="full" maxW="800px">
-                <FormControl w="80%">
-                  <Input
-                    name="title"
-                    value={projectTitle}
-                    placeholder="post's title"
-                    onChange={(e) => {
-                      setProjectTitle(e.target.value);
-                    }}
-                  />
-                </FormControl>
-                <Button type="submit" isLoading={loading} bgColor="green.300" px={10}>
-                  New blogpost
-                </Button>
-              </HStack>
-            </Center>
-          </form>
+    <Layout>
+      <VStack w="full" spacing={5}>
+        {/* add new post form */}
+        <form
+          method="POST"
+          style={{ width: "100%" }}
+          onSubmit={handleProjectCreation}
+        >
+          <Center>
+            <HStack alignItems="center" w="full" maxW="800px">
+              <FormControl w="80%">
+                <Input
+                  name="title"
+                  value={projectTitle}
+                  placeholder="post's title"
+                  onChange={(e) => {
+                    setProjectTitle(e.target.value);
+                  }}
+                />
+              </FormControl>
+              <Button
+                type="submit"
+                isLoading={loading}
+                bgColor="green.300"
+                px={10}
+              >
+                New blogpost
+              </Button>
+            </HStack>
+          </Center>
+        </form>
 
-          {error && <Text color="red.800">{error}</Text>}
+        {error && <Text color="red.800">{error}</Text>}
 
-          <VStack alignItems="start" w="full" spacing={5}>
-            {!loading &&
-              projects.map((project) => (
-                <ProjectCard key={project.projectId} project={project} />
-              ))}
-          </VStack>
+        <VStack alignItems="start" w="full" spacing={5}>
+          {!loading &&
+            projects.map((project) => (
+              <ProjectCard key={project.projectId} project={project} />
+            ))}
         </VStack>
-      </Layout>
+      </VStack>
+    </Layout>
   );
 };
 
-export default authenticatedRoute(ProjectsPage, { min: 10, max: 100, fallbackRoute: '/' });
+export default authenticatedRoute(ProjectsPage, {
+  min: 10,
+  max: 100,
+  fallbackRoute: "/",
+});
