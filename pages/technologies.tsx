@@ -157,7 +157,7 @@ const TechnologiesPage: NextPage = () => {
             <VStack
               key={tech.technologyId}
               border="1px rgba(0, 0, 0, .1) solid"
-              bgColor="gray.50"
+              bgColor="#141414"
               borderRadius="5px"
               boxShadow="lg"
               spacing={5}

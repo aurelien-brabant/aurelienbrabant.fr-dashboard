@@ -35,7 +35,7 @@ const BlogpostCard: React.FC<{ post: BrabantApi.BlogpostPreview }> = ({
         <VStack
           alignItems="start"
           w="full"
-          bg={useColorModeValue("white", "gray.900")}
+          bg="#141414"
           rounded={"md"}
           boxShadow="md"
           p={6}
@@ -47,20 +47,18 @@ const BlogpostCard: React.FC<{ post: BrabantApi.BlogpostPreview }> = ({
         >
           <Stack>
             <Text
-              color={"green.500"}
               textTransform={"uppercase"}
               fontWeight={800}
               fontSize={"sm"}
               letterSpacing={1.1}
             ></Text>
             <Heading
-              color={useColorModeValue("gray.700", "white")}
               fontSize={"2xl"}
               fontFamily={"body"}
             >
               {post.title}
             </Heading>
-            <Text color={"gray.500"}>{post.description}</Text>
+            <Text>{post.description}</Text>
           </Stack>
           <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
             <Avatar

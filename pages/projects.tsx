@@ -36,7 +36,7 @@ const ProjectCard: React.FC<{ project: BrabantApi.ProjectPreview }> = ({
           color="#fff"
           bgPosition="center"
           bgSize="cover"
-          border="5px #fff solid"
+          border="5px #141414 solid"
           minH="150px"
           w="full"
           bgImage={`linear-gradient(rgba(0, 0, 0, .9),rgba(0, 0, 0, 0.85)) , url('${
@@ -137,6 +137,8 @@ const ProjectsPage: NextPage = () => {
             <HStack alignItems="center" w="full" maxW="800px">
               <FormControl w="80%">
                 <Input
+                  borderColor="#191b1f"
+                  bgColor="#141414"
                   name="title"
                   value={projectTitle}
                   placeholder="post's title"

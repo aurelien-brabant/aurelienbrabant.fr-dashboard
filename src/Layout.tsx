@@ -55,7 +55,7 @@ export default function SidebarWithHeader({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box minH="100vh"  bgColor="#191b1f" color="rgba(255, 255, 255, 0.95)" >
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}
@@ -73,7 +73,8 @@ export default function SidebarWithHeader({
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box    ml={{ base: 0, md: 60 }} p="4" >
+
         {children}
       </Box>
     </Box>
@@ -88,21 +89,21 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   return (
     <Box
       transition="3s ease"
-      bg={useColorModeValue('white', 'gray.900')}
+      bgColor="#141414"
       borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+      borderRightColor="#e2725b"
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
       {...rest}>
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+        <Text fontSize="2xl" color="#e2725b" fontFamily="monospace" fontWeight="bold">
           AB
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} route={link.route}>
+        <NavItem key={link.name} color="#e2725b" icon={link.icon} route={link.route}>
           {link.name}
         </NavItem>
       ))}
@@ -126,8 +127,8 @@ const NavItem = ({ icon, route, children, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
-          color: 'white',
+          bgColor: '#e2725b',
+          color: '#141414',
         }}
         {...rest}>
         {icon && (

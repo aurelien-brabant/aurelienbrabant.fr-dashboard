@@ -140,7 +140,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
       <Heading>Edit content of '{post?.title}'</Heading>
       <Button bgColor="blue.300" onClick={() => { setEditContentMode(false); }}>Back</Button>
       <FormControl>
-          <Textarea name="content" minHeight="80vh" onChange={handleFormChange}>
+          <Textarea bgColor="#141414" borderColor="#191b1f" name="content" minHeight="80vh" onChange={handleFormChange}>
             {formData.content}
           </Textarea>
       </FormControl>
@@ -159,6 +159,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
               <FormControl>
                 <FormLabel textTransform="uppercase">Title</FormLabel>
                 <Input
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   name="title"
                   value={formData.title}
                   bg="gray.50"
@@ -171,6 +173,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
               <FormControl>
                 <FormLabel textTransform="uppercase">Description</FormLabel>
                 <Textarea
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   name="description"
                   bg="gray.50"
                   onChange={handleFormChange}
@@ -185,6 +189,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
                   Select visibility
                 </FormLabel>
                 <Select
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   name="privacy"
                   bg="gray.50"
                   value={formData.privacy}
@@ -205,6 +211,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
               <FormControl>
                 <FormLabel textTransform="uppercase">cover URI</FormLabel>
                 <Input
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   name="coverImagePath"
                   value={formData.coverImagePath}
                   bg="gray.50"

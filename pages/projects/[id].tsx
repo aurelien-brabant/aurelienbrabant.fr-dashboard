@@ -37,6 +37,8 @@ type FormData = {
   companyName: string;
   githubLink: string;
   gitlabLink: string;
+  giteaLink: string;
+  projectLink: string;
 };
 
 const BlogpostMeta: React.FC<{}> = ({}) => {
@@ -57,6 +59,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
     privacy: "PRIVATE",
     gitlabLink: "",
     githubLink: "",
+    giteaLink: "",
+    projectLink: "",
   });
   const [technologies, setTechnologies] = useState<BrabantApi.Technology[]>([]);
   const [technologiesIds, setTechnologiesIds] = useState<string[]>([]);
@@ -88,7 +92,7 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
     // nullify fields that are optional
     const requestBody: any = nullify<string>(
       { ...formData, technologiesIds },
-      ["githubLink", "gitlabLink", "companyName"],
+      ["githubLink", "gitlabLink", "giteaLink", "projectLink", "companyName"],
       (v) => v.length === 0
     );
 
@@ -129,6 +133,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
         privacy: json.privacy,
         githubLink: json.githubLink ? json.githubLink : "",
         gitlabLink: json.gitlabLink ? json.gitlabLink : "",
+        giteaLink: json.giteaLink ? json.giteaLink : "",
+        projectLink: json.projectLink ? json.projectLink : ""
       });
       setTechnologiesIds(
         json.technologies.map((techno) => techno.technologyId)
@@ -175,7 +181,13 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
           Back
         </Button>
         <FormControl>
-          <Textarea name="content" minHeight="80vh" onChange={handleFormChange}>
+          <Textarea
+            bgColor="#141414"
+            borderColor="#191b1f"
+            name="content"
+            minHeight="80vh"
+            onChange={handleFormChange}
+          >
             {formData.content}
           </Textarea>
         </FormControl>
@@ -201,8 +213,12 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
           <SimpleGrid columns={4} spacing={3} w="100%" py={6}>
             <GridItem colSpan={2}>
               <FormControl isRequired>
-                <FormLabel textTransform="uppercase" htmlFor="name">Name</FormLabel>
+                <FormLabel textTransform="uppercase" htmlFor="name">
+                  Name
+                </FormLabel>
                 <Input
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   name="name"
                   value={formData.name}
                   bg="gray.50"
@@ -213,8 +229,12 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
             <GridItem colSpan={2}>
               <FormControl isRequired>
-                <FormLabel htmlFor="description" textTransform="uppercase">Description</FormLabel>
+                <FormLabel htmlFor="description" textTransform="uppercase">
+                  Description
+                </FormLabel>
                 <Textarea
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   name="description"
                   bg="gray.50"
                   onChange={handleFormChange}
@@ -225,8 +245,12 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
             <GridItem colSpan={2}>
               <FormControl isRequired>
-                <FormLabel htmlFor="role" textTransform="uppercase">Role</FormLabel>
+                <FormLabel htmlFor="role" textTransform="uppercase">
+                  Role
+                </FormLabel>
                 <Input
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   name="role"
                   value={formData.role}
                   bg="gray.50"
@@ -237,8 +261,12 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
             <GridItem colSpan={2}>
               <FormControl>
-                <FormLabel htmlFor="companyName" textTransform="uppercase">Company</FormLabel>
+                <FormLabel htmlFor="companyName" textTransform="uppercase">
+                  Company
+                </FormLabel>
                 <Input
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   name="companyName"
                   value={formData.companyName}
                   bg="gray.50"
@@ -249,8 +277,12 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
             <GridItem colSpan={2}>
               <FormControl isRequired>
-                <FormLabel htmlFor="startTs" textTransform="uppercase">Beginning date</FormLabel>
+                <FormLabel htmlFor="startTs" textTransform="uppercase">
+                  Beginning date
+                </FormLabel>
                 <Input
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   type="date"
                   value={formData.startTs.split("T")[0]}
                   name="startTs"
@@ -262,8 +294,12 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
 
             <GridItem colSpan={2}>
               <FormControl>
-                <FormLabel htmlFor="endTs" textTransform="uppercase">Ending date</FormLabel>
+                <FormLabel htmlFor="endTs" textTransform="uppercase">
+                  Ending date
+                </FormLabel>
                 <Input
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   type="date"
                   value={formData.endTs.split("T")[0]}
                   name="endTs"
@@ -279,6 +315,8 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
                   Select visibility
                 </FormLabel>
                 <Select
+                  bgColor="#141414"
+                  borderColor="#191b1f"
                   name="privacy"
                   bg="gray.50"
                   value={formData.privacy}
@@ -298,8 +336,12 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
             <GridItem colSpan={2}>
               <VStack>
                 <FormControl isRequired>
-                  <FormLabel htmlFor="coverURI" textTransform="uppercase">cover URI</FormLabel>
+                  <FormLabel htmlFor="coverURI" textTransform="uppercase">
+                    cover URI
+                  </FormLabel>
                   <Input
+                    bgColor="#141414"
+                    borderColor="#191b1f"
                     name="coverURI"
                     value={formData.coverURI}
                     bg="gray.50"
@@ -311,7 +353,9 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
                   <img
                     alt="preview image"
                     src={
-                      formData.coverURI.startsWith('http') ? formData.coverURI : `${location.protocol}//${process.env.NEXT_PUBLIC_HOST_PORT}/${formData.coverURI}`
+                      formData.coverURI.startsWith("http")
+                        ? formData.coverURI
+                        : `${location.protocol}//${process.env.NEXT_PUBLIC_HOST_PORT}/${formData.coverURI}`
                     }
                   />
                 </AspectRatio>
@@ -322,8 +366,12 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
               <FormControl>
                 <FormLabel textTransform="uppercase">Gitlab Link</FormLabel>
                 <InputGroup size="sm">
-                  <InputLeftAddon>https://gitlab.com</InputLeftAddon>
+                  <InputLeftAddon bgColor="#e2725b" borderColor="#191b1f">
+                    https://gitlab.com
+                  </InputLeftAddon>
                   <Input
+                    bgColor="#141414"
+                    borderColor="#191b1f"
                     value={formData.gitlabLink}
                     name="gitlabLink"
                     bg="gray.50"
@@ -337,14 +385,51 @@ const BlogpostMeta: React.FC<{}> = ({}) => {
               <FormControl>
                 <FormLabel textTransform="uppercase">Github Link</FormLabel>
                 <InputGroup size="sm">
-                  <InputLeftAddon>https://github.com/</InputLeftAddon>
+                  <InputLeftAddon bgColor="#e2725b" borderColor="#191b1f">
+                    https://github.com/
+                  </InputLeftAddon>
                   <Input
+                    bgColor="#141414"
+                    borderColor="#191b1f"
                     value={formData.githubLink}
                     name="githubLink"
                     bg="gray.50"
                     onChange={handleFormChange}
                   />
                 </InputGroup>
+              </FormControl>
+            </GridItem>
+
+            <GridItem colSpan={2}>
+              <FormControl>
+                <FormLabel textTransform="uppercase">Gitea link</FormLabel>
+                <InputGroup size="sm">
+                  <InputLeftAddon bgColor="#e2725b" borderColor="#191b1f">
+                    https://git.aurelienbrabant.fr
+                  </InputLeftAddon>
+                  <Input
+                    bgColor="#141414"
+                    borderColor="#191b1f"
+                    value={formData.giteaLink}
+                    name="giteaLink"
+                    bg="gray.50"
+                    onChange={handleFormChange}
+                  />
+                </InputGroup>
+              </FormControl>
+            </GridItem>
+
+            <GridItem colSpan={2}>
+              <FormControl>
+                <FormLabel textTransform="uppercase">Project link</FormLabel>
+                <Input
+                  bgColor="#141414"
+                  borderColor="#191b1f"
+                  value={formData.projectLink}
+                  name="projectLink"
+                  bg="gray.50"
+                  onChange={handleFormChange}
+                />
               </FormControl>
             </GridItem>
           </SimpleGrid>

@@ -53,6 +53,8 @@ const TagManager: React.FC<TagManagerProps> = ({
               <AddIcon color="gray.300" />
             </InputLeftElement>
             <Input
+                  bgColor="#141414"
+                  borderColor="#191b1f"
               name="addedTag"
               bg="gray.50"
               placeholder="New tag"
@@ -86,12 +88,12 @@ const TagManager: React.FC<TagManagerProps> = ({
                 my={2}
                 size={"md"}
                 key={tag}
-                borderRadius="full"
+                borderRadius="2px"
                 variant="solid"
                 px={5}
                 py={1}
                 onClick={() => handleTagAction(tag, isAttachedToPost)}
-                bgColor={!isAttachedToPost ? "gray.400" : "purple.500"}
+                bgColor={!isAttachedToPost ? "#141414" : "#e2725b"}
               >
                 {tag}
               </Tag>
